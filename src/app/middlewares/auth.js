@@ -11,7 +11,11 @@ export default async function(req, res, next) {
     const [, token] = tokenBearer.split(' ');
 
     try {
-        await jwt.verify(token, authConfigs.secret);
+        const responseTokenValidation = await jwt.verify(
+            token,
+            authConfigs.secret
+        );
+        req.userID = responseTokenValidation.id;
         return next();
     } catch (err) {
         return res
